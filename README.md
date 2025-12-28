@@ -123,13 +123,7 @@
 
 ## 🔐 Environment Variables Setup
 
-Create `Backend/.env` file:
-```bash
-cd Backend
-copy .env.example .env
-```
-
-Edit `.env` and add your credentials:
+Create `Backend/.env` file with these variables:
 
 ### Required Variables:
 
