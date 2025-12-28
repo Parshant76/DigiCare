@@ -1,51 +1,50 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomePage from "./components/HomePage";
-import PatientProfile from './components/PatientProfile';
-import DoctorProfile from './components/DoctorProfile';
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
-import FileUpload from "./components/FileUpload.jsx";
-import AIAssistant from "./components/AiAssistant";
-import Explore from "./components/Explore";
-import AboutUsSection from "./components/AboutUs";
-import Footer from "./components/Footer";
-import FAQ from "./components/Faq.jsx";
+// Eager load critical components
 import Navbar from "./components/Navbar";
-//import DoctorDashboard from "./components/DoctorDashboard";
-import Dashboard from "./components/Dashboard";
-//import PatientDashboard from "./components/PatientDashboard";
-import PatientRegistration from "./components/PatientRegistration.jsx";
-import DoctorRegistration from "./components/DoctorRegistration.jsx";
-// import ProfilePage from './components/ProfilePage';
-// import UserAvatar from "./components/UserAvatar.jsx";
-import AddPatient from "./components/AddPatient.jsx"
-import Register from "./components/Register.jsx";
-import Login from "./components/Login.jsx";
-import UserProfile from "./components/UserProfile";
-import UserGuidedFlow from "./components/UserGuidedFlow.jsx";   
-import Description from "./components/Description.jsx";
+import Footer from "./components/Footer";
+
+// Lazy load route components for better performance
+const HomePage = lazy(() => import("./components/HomePage"));
+const PatientProfile = lazy(() => import('./components/PatientProfile'));
+const DoctorProfile = lazy(() => import('./components/DoctorProfile'));
+const FileUpload = lazy(() => import("./components/FileUpload.jsx"));
+const AIAssistant = lazy(() => import("./components/AiAssistant"));
+const Explore = lazy(() => import("./components/Explore"));
+const AboutUsSection = lazy(() => import("./components/AboutUs"));
+const FAQ = lazy(() => import("./components/Faq.jsx"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
+const PatientRegistration = lazy(() => import("./components/PatientRegistration.jsx"));
+const DoctorRegistration = lazy(() => import("./components/DoctorRegistration.jsx"));
+const AddPatient = lazy(() => import("./components/AddPatient.jsx"));
+const Register = lazy(() => import("./components/Register.jsx"));
+const Login = lazy(() => import("./components/Login.jsx"));
+const UserProfile = lazy(() => import("./components/UserProfile"));
+const UserGuidedFlow = lazy(() => import("./components/UserGuidedFlow.jsx"));
+const Description = lazy(() => import("./components/Description.jsx"));
 
 
-function App() {  
+function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [userData, setUserData] = useState(null); // Store full user
+  const [userData, setUserData] = useState(null); // Store full user
 
-const handleLogin = (status, email, user) => {
-  setIsLoggedIn(status);
-  setUserData(user);
-};
+  const handleLogin = (status, email, user) => {
+    setIsLoggedIn(status);
+    setUserData(user);
+  };
 
-const handleLogout = () => {
-  // Clear token or session data if stored (optional)
-  localStorage.removeItem("authToken"); // if you stored token
-  localStorage.removeItem("user"); // if you stored user data
+  const handleLogout = () => {
+    // Clear token or session data if stored (optional)
+    localStorage.removeItem("authToken"); // if you stored token
+    localStorage.removeItem("user"); // if you stored user data
 
-  // Reset state
-  setIsLoggedIn(false);
-  setUserData(null);
-};
+    // Reset state
+    setIsLoggedIn(false);
+    setUserData(null);
+  };
 
 
   return (
@@ -55,39 +54,45 @@ const handleLogout = () => {
       {/* <Navbar/> */}
       <Navbar isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* //<Route path="/login" element={<Login onLogin={handleLogin} />} /> */}
-        <Route path="/login" element={<Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/explore" element={<Explore />} />
-        <Route path="/about" element={<AboutUsSection />} />
-        <Route path="/footer" element={<Footer />} />
-        <Route path="/description" element={<Description />} />
-        <Route path="/user-guided-flow" element={<UserGuidedFlow />} />
-       
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/portal" element={<FileUpload />} />
-        <Route path="/image-analysis" element={<AIAssistant />} />
-        <Route path="/history" element={<AIAssistant />} />
-        
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/doctor-dashboard" element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />} />
-        <Route path="/patient-dashboard" element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />} />
-        <Route path="/patient-registration" element={<PatientRegistration />} />
-        <Route path="/doctor-registration" element={<DoctorRegistration />} />
-        <Route path="/add-patient" element={<AddPatient/>}/>
-        {/* <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/UserAvatar" element={<UserAvatar />} /> */}
-        <Route
-          path="/profile"
-          element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />}
-        />
-        <Route path="/patient/profile/:id" element={<PatientProfile />} />
-        <Route path="/doctor/profile/:id" element={<DoctorProfile />} />
+      <Suspense fallback={
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5rem', color: '#4F46E5' }}>
+          Loading...
+        </div>
+      }>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {/* //<Route path="/login" element={<Login onLogin={handleLogin} />} /> */}
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/about" element={<AboutUsSection />} />
+          <Route path="/footer" element={<Footer />} />
+          <Route path="/description" element={<Description />} />
+          <Route path="/user-guided-flow" element={<UserGuidedFlow />} />
 
-      </Routes>
-      
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/portal" element={<FileUpload />} />
+          <Route path="/image-analysis" element={<AIAssistant />} />
+          <Route path="/history" element={<AIAssistant />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/doctor-dashboard" element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />} />
+          <Route path="/patient-dashboard" element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />} />
+          <Route path="/patient-registration" element={<PatientRegistration />} />
+          <Route path="/doctor-registration" element={<DoctorRegistration />} />
+          <Route path="/add-patient" element={<AddPatient />} />
+          {/* <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/UserAvatar" element={<UserAvatar />} /> */}
+          <Route
+            path="/profile"
+            element={<UserProfile isLoggedIn={isLoggedIn} user={userData} onLogout={handleLogout} />}
+          />
+          <Route path="/patient/profile/:id" element={<PatientProfile />} />
+          <Route path="/doctor/profile/:id" element={<DoctorProfile />} />
+
+        </Routes>
+      </Suspense>
+
     </BrowserRouter>
   );
 }

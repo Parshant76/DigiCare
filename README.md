@@ -121,6 +121,28 @@
    npm start
    ```
 
+## 🚀 Deployment to Vercel
+
+Deploy DigiCare to Vercel for production use:
+
+1. **Prepare Environment Variables**
+   - See [ENV_SETUP_GUIDE.md](./ENV_SETUP_GUIDE.md) for detailed instructions
+   - Get MongoDB URI, JWT Secret, and Cloudinary credentials
+
+2. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+3. **Deploy on Vercel**
+   - Go to [vercel.com](https://vercel.com) and import your repository
+   - Add environment variables in Vercel dashboard
+   - Deploy automatically
+
+📖 **Full Guide**: See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for step-by-step instructions
+
 ## 🤝 Contributing
 
 We welcome contributions to DigiCare! Please feel free to submit a Pull Request.

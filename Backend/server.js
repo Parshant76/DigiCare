@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose"); // Add mongoose import
-const cookieParser = require('cookie-parser'); require("dotenv").config();
+const cookieParser = require('cookie-parser');
+const compression = require('compression'); // Performance: compress responses
+require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const userRoutes = require("./routes/user")
 const authRoutes = require("./routes/auth")
@@ -38,6 +40,10 @@ app.use(
     credentials: true, // Set to true if you need to allow credentials (e.g., cookies)
   })
 );
+
+// Performance optimizations
+app.use(compression()); // Compress all responses for faster delivery
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
