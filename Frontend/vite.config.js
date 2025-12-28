@@ -8,25 +8,13 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       tailwindcss(),
-      react({
-        babel: {
-          plugins: [
-            ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }]
-          ]
-        }
-      })
+      react()
     ],
 
     // Build optimizations
     build: {
       target: 'es2015',
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true, // Remove console logs in production
-          drop_debugger: true
-        }
-      },
+      minify: 'esbuild', // esbuild is faster and more compatible
       rollupOptions: {
         output: {
           manualChunks: {
@@ -36,7 +24,7 @@ export default defineConfig(({ mode }) => {
         }
       },
       chunkSizeWarningLimit: 1000,
-      sourcemap: false, // Disable sourcemaps for faster builds
+      sourcemap: false,
     },
 
     // Server config
