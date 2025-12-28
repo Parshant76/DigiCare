@@ -10,7 +10,11 @@ const userRoutes = require("./routes/user")
 const authRoutes = require("./routes/auth")
 const doctorRoutes = require('./routes/doctor')
 const patientRoutes = require('./routes/patient')
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, {
+  maxPoolSize: 10,
+  minPoolSize: 2,
+  socketTimeoutMS: 45000,
+})
   .then(() => console.log("MongoDB connected successfully"))
   .catch(err => console.error("MongoDB connection error:", err));
 
