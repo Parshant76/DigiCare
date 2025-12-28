@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useState } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 // Eager load critical components
 import Navbar from "./components/Navbar";
@@ -93,6 +94,7 @@ function App() {
         </Routes>
       </Suspense>
 
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
