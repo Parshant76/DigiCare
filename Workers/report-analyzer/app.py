@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, HttpUrl
 from typing import Optional
 import google.generativeai as genai
@@ -29,6 +30,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add GZip compression for faster responses
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Configuration
 MAX_RETRIES = 3

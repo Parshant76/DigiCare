@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, HttpUrl
 from typing import List
 import requests
@@ -12,7 +13,11 @@ from agent1_ import agent1_
 from agent2_ import agent2_
 from agent3_ import agent3_
 
-app = FastAPI()
+app = FastAPI(
+    title="Smart Scan API",
+    description="AI-powered medical smart scan service",
+    version="1.0.0"
+)
 
 
 # Add CORS middleware
@@ -23,6 +28,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add GZip compression for faster responses
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 
 
