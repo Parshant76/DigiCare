@@ -121,27 +121,59 @@
    npm start
    ```
 
-## 🚀 Deployment to Vercel
+## 🔐 Environment Variables Setup
 
-Deploy DigiCare to Vercel for production use:
+Create `Backend/.env` file:
+```bash
+cd Backend
+copy .env.example .env
+```
 
-1. **Prepare Environment Variables**
-   - See [ENV_SETUP_GUIDE.md](./ENV_SETUP_GUIDE.md) for detailed instructions
-   - Get MongoDB URI, JWT Secret, and Cloudinary credentials
+Edit `.env` and add your credentials:
 
-2. **Push to GitHub**
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push origin main
-   ```
+### Required Variables:
 
-3. **Deploy on Vercel**
-   - Go to [vercel.com](https://vercel.com) and import your repository
-   - Add environment variables in Vercel dashboard
-   - Deploy automatically
+**1. MONGODB_URI** (Database)
+- Get from: [mongodb.com/cloud/atlas](https://mongodb.com/cloud/atlas)
+- Free M0 cluster available
+- Format: `mongodb+srv://username:password@cluster.mongodb.net/digicare`
 
-📖 **Full Guide**: See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for step-by-step instructions
+**2. JWT_SECRET** (Authentication)
+- Generate: `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`
+- Must be 64+ characters
+
+**3. CLOUDINARY Credentials** (Image Storage)
+- Get from: [cloudinary.com](https://cloudinary.com/console)
+- Dashboard → Product Environment Credentials
+- Need: Cloud Name, API Key, API Secret
+
+Example `.env`:
+```env
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/digicare
+PORT=3000
+JWT_SECRET=your_generated_64_char_secret_here
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+FRONTEND_URL=http://localhost:5173
+```
+
+## 🚀 Vercel Deployment
+
+### Quick Deploy Steps:
+1. **Push to GitHub**: Ensure latest code is pushed
+2. **Import to Vercel**: 
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+3. **Add Environment Variables** in Vercel dashboard:
+   - Add same variables from your `.env` file
+   - Vercel → Settings → Environment Variables
+4. **Deploy**: Click Deploy button
+
+### Important Notes:
+- Frontend automatically builds with Vite
+- Backend deploys as Serverless Function
+- Don't add `PORT` or `FRONTEND_URL` to Vercel (auto-configured)
 
 ## 🤝 Contributing
 
